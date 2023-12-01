@@ -11,8 +11,17 @@ const Penghuni = db.define('Penghuni', {
   nama: {
     type: DataTypes.STRING
   },
+  noKamar: {
+    type: DataTypes.STRING
+  },
   noHP: {
-    type: DataTypes.INTEGER
+    type: DataTypes.STRING
+  },
+  alamat: {
+    type: DataTypes.STRING
+  },
+  jenisKelamin: {
+    type: DataTypes.STRING
   },
   TanggalMasuk: {
     type: DataTypes.DATE
@@ -22,6 +31,10 @@ const Penghuni = db.define('Penghuni', {
   },
   password: {
     type: DataTypes.STRING
+  },
+  dataPembayaran: {
+    type: DataTypes.JSON, // atau DataTypes.ARRAY(DataTypes.JSON) jika Sequelize mendukung
+    defaultValue: [] // default array kosong
   }
 },{tableName: 'penghuni'});
 
