@@ -6,6 +6,7 @@ app.use(express.json());
 const allRoute = require('./routes/index')
 const db = require('./config/DB')
 const Penghuni = require('./model/Account/Penghuni')
+const Admin = require('./model/Account/Admin')
 
 
 app.use(allRoute)

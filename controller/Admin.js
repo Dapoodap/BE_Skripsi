@@ -1,17 +1,51 @@
 const { Sequelize } = require("sequelize")
 const Op = Sequelize.Op
-const modelPenghuni = require('../model/Account/Penghuni')
+const modelAdmin = require('../model/Account/Admin')
 const nanoid = require('nanoid');
+const bycrpt = require('bcrypt')
 
 module.exports = {
-    getAllPenghuni : async (req,res) =>{
+    editAdminById : async (req,res) =>{
         try {
-            const penghuni = await modelPenghuni.findAll();
+            const {id} = req.params
+            const theUser = await modelAdmin.findOne({
+                where:{
+                    id: id
+                }
+            });
+            if(!theUser){
+                return res.status(200).json({
+                    status: 200,
+                    success: false,
+                    message: "failed to find admin, cant find the id",
+                    data: null
+                  });
+            }else{
+                const {username,password} = req.body
+                const hashedPass = bycrpt.hashSync(password,10)
+                await theUser.update({
+                   username,
+                   password : hashedPass,
+                   isChange : true
+                })
+                return res.status(200).json({
+                    status: 200,
+                    success: true,
+                    message: "edit sukses"
+                  });
+            }
+        } catch (error) {
+            
+        }
+    },
+    getAllAdmin : async (req,res) =>{
+        try {
+            const admin = await modelAdmin.findAll();
             return(res.json({
-                MessageEvent:'Get All Penghuni',
+                MessageEvent:'Get All Admin',
                 Status:200,
                 Succses:true,
-                Data:penghuni,
+                Data:admin,
             }))
         } catch (error) {
             console.log(error)
@@ -23,32 +57,19 @@ module.exports = {
                 });
         }
     },
-    postPenghuni : async (req,res) =>{
+    postAdmin : async (req,res) =>{
         try {
             const id = nanoid(10)
-            const {nama,noKamar,noHP,TanggalMasuk,alamat,jenisKelamin} = req.body;
-            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            const usernameGenerate = `pghn_${noKamar}`
-            const passwordGenerate = `pass_${noKamar}`
-            const data = await modelPenghuni.create({
+            const usernameGenerate = `Adminus_${id}`
+            const data = await modelAdmin.create({
                 id,
-                nama,
-                noKamar,
-                noHP,
-                alamat,
-                jenisKelamin,
-                TanggalMasuk,
                 username : usernameGenerate,
-                password : passwordGenerate,
-                dataPembayaran : months.map(bulan => ({
-                    bulan,
-                    status: false // Belum dibayar
-                }))
+                password : bycrpt.hashSync(`Adminpass_${id}`,10)
             })
             return res.status(201).json({
                 status  : res.statusCode,
                 succses : true,
-                message : 'penghuni baru ditambahkan',
+                message : 'admin baru ditambahkan',
                 data
             })
         } catch (error) {
@@ -61,10 +82,10 @@ module.exports = {
                 });
         }
     },
-    getPenghuniById : async (req,res) =>{
+    getAdminById : async (req,res) =>{
         try {
             const {id} = req.params
-            const theUser = await modelPenghuni.findOne({
+            const theUser = await modelAdmin.findOne({
                 where:{
                     id: id
                 }
@@ -73,7 +94,7 @@ module.exports = {
                 return res.status(200).json({
                     status: 200,
                     success: false,
-                    message: "failed to find user, cant find the id",
+                    message: "failed to find admin, cant find the id",
                     data: null
                   });
             }else{
@@ -82,33 +103,6 @@ module.exports = {
                     success: true,
                     message: "user find",
                     data: theUser
-                  });
-            }
-        } catch (error) {
-            
-        }
-    },
-    editPenghuniById : async (req,res) =>{
-        try {
-            const {id} = req.params
-            const updateUser = await modelPenghuni.update(req.body,{
-                where:{
-                    id:id
-                }
-            })
-            if (!updateUser[0]) {
-                return res.status(200).json({
-                    status: 200,
-                    success: false,
-                    message: "failed to update user, cant find the id",
-                    data: null
-                  });
-            }else{
-                return res.status(200).json({
-                    status: 200,
-                    success: true,
-                    message: "user updated",
-                    data: req.body
                   });
             }
         } catch (error) {
@@ -121,10 +115,10 @@ module.exports = {
                 });
         }
     },
-    deleteUserById : async (req,res) => {
+    deleteAdminById : async (req,res) => {
         try {
             const {id} = req.params;
-            const deletedUser = await modelPenghuni.destroy({
+            const deletedUser = await modelAdmin.destroy({
                 where :{
                     id: id
                 }
@@ -133,14 +127,14 @@ module.exports = {
                 return res.status(200).json({
                     status: 200,
                     success: false,
-                    message: "failed to delete user, cant find the id",
+                    message: "failed to delete admin, cant find the id",
                     data: null
                   });
             }else{
                 return res.status(200).json({
                     status: 200,
                     success: false,
-                    message: `user ${id} have been deleted`
+                    message: `admin ${id} have been deleted`
                   });
             }
         } catch (error) {
@@ -156,7 +150,7 @@ module.exports = {
     resetPasswordById : async (req,res) => {
         try {
             const {id} = req.params
-            const theUser = await modelPenghuni.findOne({
+            const theUser = await modelAdmin.findOne({
                 where:{
                     id: id
                 }
@@ -165,12 +159,15 @@ module.exports = {
                 return res.status(200).json({
                     status: 200,
                     success: false,
-                    message: "failed to find user, cant find the id",
+                    message: "failed to find admin, cant find the id",
                     data: null
                   });
             }else{
+                const hashedPass = bycrpt.hashSync(`Adminpass_${id}`,10)
                 await theUser.update({
-                    password : `pass_${theUser.noKamar}`
+                    username : `Adminus_${id}`,
+                    password : hashedPass
+                    
                 })
                 return res.status(200).json({
                     status: 200,

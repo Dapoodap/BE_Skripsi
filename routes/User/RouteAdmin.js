@@ -1,17 +1,14 @@
 var express = require('express');
 const router = express.Router()
-const {getAllPenghuni,postPenghuni,getPenghuniById,editPenghuniById,deleteUserById,resetPasswordById} = require('../../controller/Admin')
+const {getAllAdmin,getAdminById,postAdmin,deleteAdminById,resetPasswordById,editAdminById} = require('../../controller/Admin')
 
 
-router.get('/',getAllPenghuni)
-router.post('/',postPenghuni)
-router.get('/:id',getPenghuniById)
-router.put('/:id',editPenghuniById)
+router.get('/',getAllAdmin)
+router.post('/',postAdmin)
+router.get('/:id',getAdminById)
+router.put('/:id',editAdminById)
 router.put('/pass/:id',resetPasswordById)
-router.delete('/:id',deleteUserById)
-
-
-// router.use('/signup')
+router.delete('/:id',deleteAdminById)
 
 
 module.exports = router

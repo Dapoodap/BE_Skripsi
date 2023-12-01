@@ -32,6 +32,10 @@ const Penghuni = db.define('Penghuni', {
   password: {
     type: DataTypes.STRING
   },
+  isChange: {
+    type: DataTypes.BOOLEAN, // Tipe data boolean untuk kolom isChange
+    defaultValue: false // Nilai default dapat disesuaikan dengan kebutuhan
+},
   dataPembayaran: {
     type: DataTypes.JSON, // atau DataTypes.ARRAY(DataTypes.JSON) jika Sequelize mendukung
     defaultValue: [] // default array kosong
