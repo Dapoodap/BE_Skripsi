@@ -1,12 +1,19 @@
 require('dotenv').config()
 const express = require ('express')
+const cors = require('cors');
+
+
 const app = express()
+app.use(cors());
 app.use(express.json());
+
 
 const allRoute = require('./routes/index')
 const db = require('./config/DB')
 const Penghuni = require('./model/Account/Penghuni')
 const Admin = require('./model/Account/Admin')
+const Kamar = require('./model/Kamar')
+const Laporan = require('./model/Laporan')
 
 
 app.use(allRoute)

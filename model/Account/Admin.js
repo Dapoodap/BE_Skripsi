@@ -11,6 +11,9 @@ const Admin = db.define('Admin', {
   username: {
     type: DataTypes.STRING
   },
+  role: {
+    type: DataTypes.BOOLEAN
+  },
   password: {
     type: DataTypes.STRING
   },

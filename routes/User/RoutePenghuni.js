@@ -1,6 +1,7 @@
 var express = require('express');
 const router = express.Router()
-const {getAllPenghuni,postPenghuni,getPenghuniById,editPenghuniById,deleteUserById,resetPasswordById, gantiPassword} = require('../../controller/Penghuni')
+const {getAllPenghuni,postPenghuni,getPenghuniById,editPenghuniById,deleteUserById,resetPasswordById, gantiPassword} = require('../../controller/Penghuni');
+const { verifyToken } = require('../../controller/Auth');
 
 
 router.get('/',getAllPenghuni)

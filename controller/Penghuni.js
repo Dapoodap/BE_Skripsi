@@ -1,6 +1,8 @@
 const { Sequelize } = require("sequelize")
 const Op = Sequelize.Op
 const modelPenghuni = require('../model/Account/Penghuni')
+const modelKamar = require('../model/Kamar')
+const modelLaporan = require('../model/Laporan')
 const nanoid = require('nanoid');
 const bycrpt = require('bcrypt')
 
@@ -27,7 +29,7 @@ module.exports = {
     postPenghuni : async (req,res) =>{
         try {
             const id = nanoid(10)
-            const {nama,noKamar,noHP,TanggalMasuk,alamat,jenisKelamin} = req.body;
+            const {nama,noKamar,noHP,TanggalMasuk,alamat,jenisKelamin,BiayaTambahan} = req.body;
             const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             const usernameGenerate = `pghn_${noKamar}`
             const passwordGenerate = bycrpt.hashSync(`pass_${noKamar}`,10)
@@ -39,6 +41,8 @@ module.exports = {
                 alamat,
                 jenisKelamin,
                 TanggalMasuk,
+                BiayaTambahan,
+                Role : false,
                 username : usernameGenerate,
                 password : passwordGenerate,
                 dataPembayaran : months.map(bulan => ({
@@ -66,9 +70,12 @@ module.exports = {
         try {
             const {id} = req.params
             const theUser = await modelPenghuni.findOne({
-                where:{
-                    id: id
-                }
+                where:{id: id},
+                include: [
+                    { model: modelKamar, attributes: ['noKamar', 'tipeKamar', 'statusKamar', 'ratingKamar', 'deskripsiKamar', 'fasilitasKamar', 'hargaKamar'] },
+                    { model: modelLaporan, attributes: ['JenisKeluhan', 'DeskripsiKeluhan', 'TanggalLaporan'] }
+                  ]
+               
             });
             if(!theUser){
                 return res.status(200).json({

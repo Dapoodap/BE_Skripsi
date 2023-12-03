@@ -21,7 +21,7 @@ module.exports = {
             if (!passwordMatch) {
                 return res.status(401).json({ message: 'Username atau password salah' });
               }
-              const token = jwt.sign({ id : theUser.id }, 'skripsiDapo', { expiresIn: '1h' });
+              const token = jwt.sign({ id : theUser.id, data:"coba role" }, 'skripsiDapo', { expiresIn: '1h' });
               return res.status(200).json({ message: 'Login berhasil', token });
             } catch (error) {
             console.log(error)
