@@ -4,6 +4,7 @@ const Penghuni = require('../model/Account/Penghuni');
 
 
 
+
 const Laporan = db.define('Laporan', {
   id: {
     type: DataTypes.STRING, 
@@ -26,10 +27,6 @@ const Laporan = db.define('Laporan', {
     defaultValue: false
   }
 },{tableName: 'laporan'});
-
-// Laporan.hasOne(Penghuni, { foreignKey: 'IdPelapor' });
-  
-// Penghuni.hasMany(Laporan,{foreignKey : "IdPelapor"})
 
 
 module.exports = Laporan;

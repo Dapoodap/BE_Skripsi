@@ -63,7 +63,6 @@ module.exports = {
             const usernameGenerate = `Adminus_${id}`
             const data = await modelAdmin.create({
                 id,
-                role:true,
                 username : usernameGenerate,
                 password : bycrpt.hashSync(`Adminpass_${id}`,10)
             })

@@ -33,6 +33,30 @@ module.exports = {
             const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             const usernameGenerate = `pghn_${noKamar}`
             const passwordGenerate = bycrpt.hashSync(`pass_${noKamar}`,10)
+            const kamarnya = await modelKamar.findOne({
+                where:{
+                    noKamar: noKamar
+                }
+            });
+            if (!kamarnya) {
+                return res.status(200).json({
+                    status: 200,
+                    success: false,
+                    message: "failed to find kamar, cant find the id",
+                    data: null
+                  });
+            }
+            if (kamarnya.statusKamar !== "kosong") {
+                return res.status(200).json({
+                    status: 200,
+                    success: false,
+                    message: "sum wrong, kamar sudah penuh",
+                    data: null
+                  });
+            }
+            await kamarnya.update({
+                statusKamar : "isi"
+            })
             const data = await modelPenghuni.create({
                 id,
                 nama,
@@ -42,7 +66,6 @@ module.exports = {
                 jenisKelamin,
                 TanggalMasuk,
                 BiayaTambahan,
-                Role : false,
                 username : usernameGenerate,
                 password : passwordGenerate,
                 dataPembayaran : months.map(bulan => ({
@@ -163,34 +186,54 @@ module.exports = {
     },
     deleteUserById : async (req,res) => {
         try {
-            const {id} = req.params;
-            const deletedUser = await modelPenghuni.destroy({
-                where :{
-                    id: id
-                }
-            })
+            const { id } = req.params;
+            const deletedUser = await modelPenghuni.findByPk(id); // Menggunakan findByPk untuk mendapatkan data penghuni yang dihapus
+    
             if (!deletedUser) {
                 return res.status(200).json({
                     status: 200,
                     success: false,
-                    message: "failed to delete user, cant find the id",
+                    message: `failed to delete user, cannot find user with id ${id}`,
                     data: null
-                  });
-            }else{
-                return res.status(200).json({
-                    status: 200,
-                    success: false,
-                    message: `user ${id} have been deleted`
-                  });
+                });
             }
+    
+            const data = await modelKamar.findOne({
+                where: {
+                    noKamar: deletedUser.noKamar
+                }
+            });
+    
+            // Pengecekan apakah masih ada penghuni lain yang tinggal di kamar tersebut
+            const otherResidents = await modelPenghuni.findOne({
+                where: {
+                    noKamar: deletedUser.noKamar,
+                    id: { [Op.not]: deletedUser.id }
+                }
+            });
+    
+            // Ubah status kamar hanya jika tidak ada penghuni lain
+            if (!otherResidents) {
+                await data.update({
+                    statusKamar: "kosong"
+                });
+            }
+    
+            await deletedUser.destroy();
+    
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                message: `user ${id} has been deleted`
+            });
         } catch (error) {
-            console.log(error)
+            console.log(error);
             return res.status(500).json({
                 status: 500,
                 success: false,
                 message: "internal server error",
                 data: null
-                });
+            });
         }
     },
     resetPasswordById : async (req,res) => {

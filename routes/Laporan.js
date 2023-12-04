@@ -1,11 +1,12 @@
 var express = require('express');
 const router = express.Router()
-const { getAllLaporan, postLaporan, getLaporanById, editLaporanById, deleteLaporanById } = require('../controller/Laporan')
+const { getAllLaporan, postLaporan, getLaporanById, editLaporanById, deleteLaporanById, postTotalLaporan } = require('../controller/Laporan')
 
 
 // router.get('/',getAllPenghuni)
 router.get('/',getAllLaporan)
 router.post('/',postLaporan)
+router.post('/total',postTotalLaporan)
 router.get('/:id',getLaporanById)
 router.put('/:id',editLaporanById)
 router.delete('/:id',deleteLaporanById)

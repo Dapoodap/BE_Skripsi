@@ -13,7 +13,8 @@ const db = require('./config/DB')
 const Penghuni = require('./model/Account/Penghuni')
 const Admin = require('./model/Account/Admin')
 const Kamar = require('./model/Kamar')
-const Laporan = require('./model/Laporan')
+const Laporan = require('./model/Laporan');
+const TotalKeluhan = require('./model/LaporanTotal');
 
 
 app.use(allRoute)

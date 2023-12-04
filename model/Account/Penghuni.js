@@ -3,6 +3,7 @@ const { DataTypes } = require('sequelize');
 const db = require('../../config/DB');
 const kamar = require('../Kamar');
 const laporan = require("../Laporan")
+const TotalLaporanBulanan = require("../LaporanTotal")
 
 
 
@@ -43,9 +44,6 @@ const Penghuni = db.define('Penghuni', {
   isChange: {
     type: DataTypes.BOOLEAN, // Tipe data boolean untuk kolom isChange
     defaultValue: false // Nilai default dapat disesuaikan dengan kebutuhan
-},
-Role: {
-  type: DataTypes.BOOLEAN
 },
   dataPembayaran: {
     type: DataTypes.JSON, // atau DataTypes.ARRAY(DataTypes.JSON) jika Sequelize mendukung
