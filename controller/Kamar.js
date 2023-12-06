@@ -54,10 +54,10 @@ module.exports = {
     },
     editKamarById : async (req,res)=>{
         try {
-            const {id} = req.params
+            const {noKamar} = req.params
             const theKamar = await modelKamar.update(req.body,{
                 where:{
-                    id:id
+                    noKamar:noKamar
                 }
             })
             if (!theKamar[0]) {
@@ -86,10 +86,10 @@ module.exports = {
     },
     getKamarById : async (req,res) =>{
         try {
-            const {id} = req.params
+            const {noKamar} = req.params
             const theKamar = await modelKamar.findOne({
                 where:{
-                    id: id
+                    noKamar: noKamar
                 }
             });
             if(!theKamar){

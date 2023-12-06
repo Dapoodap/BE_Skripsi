@@ -3,7 +3,8 @@ const { DataTypes } = require('sequelize');
 const db = require('../../config/DB');
 const kamar = require('../Kamar');
 const laporan = require("../Laporan")
-const TotalLaporanBulanan = require("../LaporanTotal")
+const TotalLaporanBulanan = require("../LaporanTotal");
+
 
 
 
@@ -46,7 +47,7 @@ const Penghuni = db.define('Penghuni', {
     defaultValue: false // Nilai default dapat disesuaikan dengan kebutuhan
 },
   dataPembayaran: {
-    type: DataTypes.JSON, // atau DataTypes.ARRAY(DataTypes.JSON) jika Sequelize mendukung
+    type: DataTypes.TEXT, // atau DataTypes.ARRAY(DataTypes.JSON) jika Sequelize mendukung
     defaultValue: [] // default array kosong
   }
 },{tableName: 'penghuni'});
@@ -55,4 +56,12 @@ Penghuni.belongsTo(kamar, { foreignKey: 'noKamar' });
 Penghuni.hasMany(laporan, { foreignKey: 'IdPelapor', onDelete: 'CASCADE' });
 laporan.belongsTo(Penghuni, { foreignKey: 'IdPelapor', onDelete: 'CASCADE' });
 
+
+// Penghuni.prototype.updatePaymentStatus = async function (bulan) {
+//   const index = this.dataPembayaran.findIndex(item => item.bulan === bulan);
+//   if (index !== -1) {
+//     this.dataPembayaran[index].status = true;
+//     await this.save();
+//   }
+// };
 module.exports = Penghuni;

@@ -6,6 +6,9 @@ const login = require('./Login')
 const auth = require('./Auth')
 const kamar = require('./Kamar')
 const laporan = require('./Laporan')
+const sewa = require('../routes/Proof/Sewa')
+const dp = require('../routes/Proof/DP')
+const uploadImage = require('../helper')
 
 
 router.get('/',(req,res)=>{
@@ -21,6 +24,9 @@ router.use('/login',login)
 router.use('/auth',auth)
 router.use('/kamar',kamar)
 router.use('/lapor',laporan)
+router.use('/inv',sewa)
+router.use('/dp',dp)
+
 
 
 module.exports = router;

@@ -47,8 +47,8 @@ module.exports = {
                   });
             }
             if (kamarnya.statusKamar !== "kosong") {
-                return res.status(200).json({
-                    status: 200,
+                return res.status(400).json({
+                    status: 400,
                     success: false,
                     message: "sum wrong, kamar sudah penuh",
                     data: null
@@ -57,6 +57,7 @@ module.exports = {
             await kamarnya.update({
                 statusKamar : "isi"
             })
+            
             const data = await modelPenghuni.create({
                 id,
                 nama,
@@ -68,10 +69,7 @@ module.exports = {
                 BiayaTambahan,
                 username : usernameGenerate,
                 password : passwordGenerate,
-                dataPembayaran : months.map(bulan => ({
-                    bulan,
-                    status: false // Belum dibayar
-                }))
+                dataPembayaran : JSON.stringify(months.map(bulan => ({ bulan, status: false })))
             })
             return res.status(201).json({
                 status  : res.statusCode,

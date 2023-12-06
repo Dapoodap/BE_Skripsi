@@ -1,6 +1,11 @@
 require('dotenv').config()
 const express = require ('express')
+var path = require('path');
 const cors = require('cors');
+const bodyParser = require('body-parser')
+const multer = require('multer')
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
 
 
 const app = express()
@@ -15,9 +20,47 @@ const Admin = require('./model/Account/Admin')
 const Kamar = require('./model/Kamar')
 const Laporan = require('./model/Laporan');
 const TotalKeluhan = require('./model/LaporanTotal');
+const Sewa = require('./model/Payment/Payproof');
+const DP = require('./model/Payment/PayproofDP');
+const uploadImage = require('./helper');
 
 
-app.use(allRoute)
+
+const multerMid = multer({
+    storage: multer.memoryStorage(),
+    limits: {
+      fileSize: 5 * 1024 * 1024,
+    },
+  })
+  
+  app.disable('x-powered-by')
+  app.use(multerMid.single('file'))
+  app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({extended: false}))
+  app.use(logger('dev'));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  app.use(cookieParser());
+  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(allRoute)
+
+
+  app.post('/uploads', async (req, res, next) => {
+    try {
+    console.log(req.file);
+      const myFile = req.file
+      const imageUrl = await uploadImage(myFile)
+  
+      res
+        .status(200)
+        .json({
+          message: "Upload was successful",
+          data: imageUrl
+        })
+    } catch (error) {
+      next(error)
+    }
+  })
 app.listen(process.env.port,()=>{
     console.log(`Example app listening at http://localhost:${process.env.port}`)
 })

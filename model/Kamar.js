@@ -29,7 +29,7 @@ const Kamar = db.define('Kamar', {
     defaultValue: [] // default array kosong
   },
   hargaKamar: {
-    type: DataTypes.STRING
+    type: DataTypes.FLOAT
   }
 },{tableName: 'kamar'});
 
