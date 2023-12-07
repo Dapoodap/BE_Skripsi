@@ -22,6 +22,7 @@ const Laporan = require('./model/Laporan');
 const TotalKeluhan = require('./model/LaporanTotal');
 const Sewa = require('./model/Payment/Payproof');
 const DP = require('./model/Payment/PayproofDP');
+const pengumuman = require('./model/Pengumuman');
 const uploadImage = require('./helper');
 
 

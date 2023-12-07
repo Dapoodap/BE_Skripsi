@@ -8,6 +8,7 @@ const kamar = require('./Kamar')
 const laporan = require('./Laporan')
 const sewa = require('../routes/Proof/Sewa')
 const dp = require('../routes/Proof/DP')
+const pengum = require('../routes/Pengumuman')
 const uploadImage = require('../helper')
 
 
@@ -26,6 +27,7 @@ router.use('/kamar',kamar)
 router.use('/lapor',laporan)
 router.use('/inv',sewa)
 router.use('/dp',dp)
+router.use('/pengumuman',pengum)
 
 
 

@@ -18,7 +18,7 @@ module.exports = {
                 nama,
                 nomorInvoice,
                 bulan,
-               gambar : "Ini tes GBR"
+                gambar : "Ini tes GBR"
             })
             return res.status(201).json({
                 status  : res.statusCode,
