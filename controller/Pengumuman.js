@@ -12,8 +12,8 @@ module.exports = {
                 }
             })
             if (!thePengumuman[0]) {
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to update pengumuman, cant find the kamar",
                     data: null
@@ -88,8 +88,8 @@ module.exports = {
                 }
             });
             if(!thePengumuman){
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find pengumuman, cant find the id",
                     data: null
@@ -121,8 +121,8 @@ module.exports = {
                 }
             })
             if (!deletedPengumuman) {
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to delete pengumuman, cant find the id",
                     data: null

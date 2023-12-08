@@ -16,8 +16,8 @@ module.exports = {
                 }
             });
             if(!theLaporan){
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find laporan, cant find the id",
                     data: null
@@ -31,7 +31,13 @@ module.exports = {
                   });
             }
         } catch (error) {
-            
+            console.log(error)
+            return res.status(500).json({
+                status: 500,
+                success: false,
+                message: "internal server error",
+                data: null
+                }); 
         }
     },
     getAllLaporan : async (req,res) =>{
@@ -74,10 +80,10 @@ module.exports = {
                 }
             });
             if (!bulanCari) {
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
-                    message: "failed to find month, cant find the id",
+                    message: "failed to find month, month doesnt exist",
                     data: null
                   });
             }
@@ -121,8 +127,8 @@ module.exports = {
                 }
             });
             if(!theData){
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find laporan, cant find the id",
                     data: null
@@ -154,10 +160,10 @@ module.exports = {
                 }
             });
             if (!theLaporan) {
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
-                    message: "failed to find month, cant find the id",
+                    message: "failed to find laporan, cant find the id",
                     data: null
                   });
             }

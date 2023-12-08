@@ -65,10 +65,10 @@ module.exports = {
             const theInv = await modelPayme.findOne({
                 where:{nomorInvoice: nomorInvoice}});
             if(!theInv){
-                return res.status(400).json({
+                return res.status(404).json({
                     status: 400,
                     success: false,
-                    message: "failed to find invoice, cant find the id",
+                    message: "failed to find invoice, cant find the nomor",
                     data: null
                   });
             }else{
@@ -153,8 +153,8 @@ module.exports = {
                 where:{invoiceId: invoiceId},
             });
             if(!theUser){
-                return res.status(400).json({
-                    status: 400,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find invoice, cant find the id",
                     data: null
@@ -185,10 +185,10 @@ module.exports = {
             const deletedINV = await modelPayme.findByPk(id); // Menggunakan findByPk untuk mendapatkan data penghuni yang dihapus
     
             if (!deletedINV) {
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
-                    message: `failed to delete inv, cannot find user with id ${id}`,
+                    message: `failed to delete inv, cannot find id`,
                     data: null
                 });
             }

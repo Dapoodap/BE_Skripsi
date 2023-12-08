@@ -61,8 +61,8 @@ module.exports = {
                 }
             })
             if (!theKamar[0]) {
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to update kamar, cant find the kamar",
                     data: null
@@ -93,8 +93,8 @@ module.exports = {
                 }
             });
             if(!theKamar){
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find kamar, cant find the id",
                     data: null
@@ -125,8 +125,8 @@ module.exports = {
                 }
             })
             if (!deletedKamar) {
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to delete kamar, cant find the id",
                     data: null

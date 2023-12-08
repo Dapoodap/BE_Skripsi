@@ -14,8 +14,8 @@ module.exports = {
                 }
             });
             if(!theUser){
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find admin, cant find the id",
                     data: null
@@ -35,7 +35,13 @@ module.exports = {
                   });
             }
         } catch (error) {
-            
+            console.log(error)
+            return res.status(500).json({
+                status: 500,
+                success: false,
+                message: "internal server error",
+                data: null
+                });
         }
     },
     getAllAdmin : async (req,res) =>{
@@ -91,8 +97,8 @@ module.exports = {
                 }
             });
             if(!theUser){
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find admin, cant find the id",
                     data: null
@@ -124,8 +130,8 @@ module.exports = {
                 }
             })
             if (!deletedUser) {
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to delete admin, cant find the id",
                     data: null
@@ -156,8 +162,8 @@ module.exports = {
                 }
             });
             if(!theUser){
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find admin, cant find the id",
                     data: null
@@ -177,7 +183,13 @@ module.exports = {
                   });
             }
         } catch (error) {
-            
+            console.log(error)
+            return res.status(500).json({
+                status: 500,
+                success: false,
+                message: "internal server error",
+                data: null
+                });
         }
     }
 }

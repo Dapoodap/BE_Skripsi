@@ -78,10 +78,10 @@ module.exports = {
                 }
             });
             if(!theINV){
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
-                    message: "failed to find inv, cant find the id",
+                    message: "failed to find inv, cant find the number",
                     data: null
                   });
             }else{
@@ -111,8 +111,8 @@ module.exports = {
                 }
             })
             if (!deletedINV) {
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to delete INV, cant find the id",
                     data: null
@@ -143,8 +143,8 @@ module.exports = {
                 }
             });
             if(!theINV){
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find inv, cant find the id",
                     data: null
@@ -178,8 +178,8 @@ module.exports = {
                 }
             });
             if(!theINV){
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find inv, cant find the id",
                     data: null

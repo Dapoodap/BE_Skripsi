@@ -39,8 +39,8 @@ module.exports = {
                 }
             });
             if (!kamarnya) {
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find kamar, cant find the id",
                     data: null
@@ -99,8 +99,8 @@ module.exports = {
                
             });
             if(!theUser){
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find user, cant find the id",
                     data: null
@@ -114,7 +114,13 @@ module.exports = {
                   });
             }
         } catch (error) {
-            
+            console.log(error)
+            return res.status(500).json({
+                status: 500,
+                success: false,
+                message: "internal server error",
+                data: null
+                });
         }
     },
     editPenghuniById : async (req,res) =>{
@@ -126,8 +132,8 @@ module.exports = {
                 }
             });
             if(!theUser){
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find user, cant find the id",
                     data: null
@@ -147,7 +153,13 @@ module.exports = {
                   });
             }
         } catch (error) {
-            
+            console.log(error)
+            return res.status(500).json({
+                status: 500,
+                success: false,
+                message: "internal server error",
+                data: null
+                });
         }
     },
     gantiPassword : async (req,res) =>{
@@ -159,8 +171,8 @@ module.exports = {
                 }
             });
             if(!theUser){
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find user, cant find the id",
                     data: null
@@ -179,7 +191,13 @@ module.exports = {
                   });
             }
         } catch (error) {
-            
+            console.log(error)
+            return res.status(500).json({
+                status: 500,
+                success: false,
+                message: "internal server error",
+                data: null
+                });
         }
     },
     deleteUserById : async (req,res) => {
@@ -188,8 +206,8 @@ module.exports = {
             const deletedUser = await modelPenghuni.findByPk(id); // Menggunakan findByPk untuk mendapatkan data penghuni yang dihapus
     
             if (!deletedUser) {
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: `failed to delete user, cannot find user with id ${id}`,
                     data: null
@@ -243,8 +261,8 @@ module.exports = {
                 }
             });
             if(!theUser){
-                return res.status(200).json({
-                    status: 200,
+                return res.status(404).json({
+                    status: 404,
                     success: false,
                     message: "failed to find user, cant find the id",
                     data: null
@@ -263,7 +281,13 @@ module.exports = {
                   });
             }
         } catch (error) {
-            
+            console.log(error)
+            return res.status(500).json({
+                status: 500,
+                success: false,
+                message: "internal server error",
+                data: null
+                });
         }
     }
     
