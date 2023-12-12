@@ -45,23 +45,6 @@ const multerMid = multer({
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(allRoute)
 
-
-  app.post('/uploads', async (req, res, next) => {
-    try {
-    console.log(req.file);
-      const myFile = req.file
-      const imageUrl = await uploadImage(myFile)
-  
-      res
-        .status(200)
-        .json({
-          message: "Upload was successful",
-          data: imageUrl
-        })
-    } catch (error) {
-      next(error)
-    }
-  })
 app.listen(process.env.port,()=>{
     console.log(`Example app listening at http://localhost:${process.env.port}`)
 })

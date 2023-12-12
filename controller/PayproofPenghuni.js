@@ -9,16 +9,18 @@ module.exports = {
     postInvoice : async (req,res) =>{
         try {
             const id = nanoid(4)
+            const myFile = req.file
             const {idPenghuni} = req.params
             const {nama,bulan} = req.body
             const nomorInvoice = `INV-${id}`
+            const imageUrl = await uploadImage(myFile)
             const data = await modelPayme.create({
                 id,
                 idPenghuni,
                 nama,
                 nomorInvoice,
                 bulan,
-                gambar : "Ini tes GBR"
+                gambar : imageUrl
             })
             return res.status(201).json({
                 status  : res.statusCode,

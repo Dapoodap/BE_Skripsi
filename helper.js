@@ -33,6 +33,23 @@ const uploadImage = (file) => new Promise((resolve, reject) => {
   })
   .end(buffer)
 
-})
+});
+/**
+ * @param {string} imageName - The name of the image file to be deleted
+ * @description - This function deletes an image file from Google Cloud Storage
+ */
 
-module.exports = uploadImage
+const DeleteImage = (imageName) => {
+  const file = bucket.file(imageName);
+
+  return file
+    .delete()
+    .then(() => {
+      console.log(`File ${imageName} deleted successfully`);
+    })
+    .catch((err) => {
+      console.error(`Error deleting file ${imageName}: ${err}`);
+      throw err;
+    });
+};
+module.exports = {uploadImage,DeleteImage}

@@ -2,7 +2,8 @@ const { Sequelize } = require("sequelize")
 const modelKamar = require('../model/Kamar')
 const modelDP = require('../model/Payment/PayproofDP')
 const nanoid = require('nanoid');
-const bycrpt = require('bcrypt')
+const bycrpt = require('bcrypt');
+const {uploadImage,DeleteImage} = require("../helper");
 
 module.exports = {
     getAllDPInvoice : async (req,res) =>{
@@ -26,10 +27,10 @@ module.exports = {
     },
     postDP : async (req,res) =>{
         try {
+            const myFile = req.file
             const id = nanoid(4)
             const {nama,noKamar,noHP,alamat,jenisKelamin,tanggal,tambahanBawaan,tambahanSewa} = req.body 
             const kamar = await modelKamar.findOne({ where: { noKamar } });
-
             if (!kamar) {
                 return null;
               }
@@ -38,6 +39,7 @@ module.exports = {
             await kamar.update({
                 statusKamar : "isi"
             })
+            const imageUrl = await uploadImage(myFile)
             const data = await modelDP.create({
                     id,
                     nomorInvoice : `INV-${id}`,
@@ -51,6 +53,7 @@ module.exports = {
                     tambahanSewa,
                     totalDP,
                     totalSewa,
+                    gambar : imageUrl
 
             })
             return res.status(201).json({
@@ -105,12 +108,24 @@ module.exports = {
     deleteDPByid : async (req,res) => {
         try {
             const {id} = req.params;
-            const deletedINV = await modelDP.destroy({
+            const selectedINV = await modelDP.findOne({
                 where :{
                     id: id
                 }
             })
-            if (!deletedINV) {
+            const imageUrlInDatabase = selectedINV.gambar; // Ganti dengan atribut yang menyimpan URL gambar di model DP Anda
+            const urlParts = imageUrlInDatabase.split('/');
+            const blobName = urlParts.slice(4).join('/');
+
+            // Hapus gambar dari Google Cloud Storage
+            const deleteImageResult = await DeleteImage(blobName);
+            const deletedDP = await modelDP.destroy({
+                where: {
+                  id: id,
+                },
+              });
+
+            if (!deletedDP) {
                 return res.status(404).json({
                     status: 404,
                     success: false,
@@ -121,7 +136,7 @@ module.exports = {
                 return res.status(200).json({
                     status: 200,
                     success: false,
-                    message: `inv ${id} have been deleted`
+                    message: `inv ${id} have been deleted ${deleteImageResult}`
                   });
             }
         } catch (error) {
