@@ -34,6 +34,13 @@ module.exports = {
             if (!kamar) {
                 return null;
               }
+            if (kamar.status === 'isi') {
+                return res.status(401).json({
+                    status  : res.statusCode,
+                    succses : false,
+                    message : 'kamar penuh',
+                })
+            }
             const totalSewa = tambahanSewa + kamar.hargaKamar
             const totalDP = 0.5 * totalSewa
             await kamar.update({

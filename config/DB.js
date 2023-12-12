@@ -1,6 +1,10 @@
 require('dotenv').config()
 const sequalize = require('sequelize')
 
-const conn = new sequalize(process.env.DB_NAME,process.env.DB_USER,process.env.DB_PASSWORD,{host:process.env.DB_HOST,dialect:process.env.DB_DIALECT})
-
+  const conn = new sequalize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST,
+    // one of our supported dialects:
+    // 'mysql', 'mariadb', 'postgres', 'mssql', 'sqlite', 'snowflake', 'db2' or 'ibmi'
+    dialect: process.env.DB_DIALECT
+  });
 module.exports = conn
