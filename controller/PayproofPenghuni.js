@@ -3,7 +3,8 @@ const Op = Sequelize.Op
 const modelPayme = require('../model/Payment/Payproof')
 const modelPenghuni = require('../model/Account/Penghuni')
 const nanoid = require('nanoid');
-const bycrpt = require('bcrypt')
+const bycrpt = require('bcrypt');
+const { uploadImage, DeleteImage } = require("../helper");
 
 module.exports = {
     postInvoice : async (req,res) =>{
@@ -46,7 +47,7 @@ module.exports = {
                   ]
             });
             return(res.json({
-                MessageEvent:'Get All Admin',
+                MessageEvent:'Get All INV',
                 Status:200,
                 Succses:true,
                 Data:inv,
@@ -150,10 +151,12 @@ module.exports = {
     },
     declineInvoice: async (req, res) => {
         try {
-            const {invoiceId} = req.params
-            const theInvoice = await modelPayme.findOne({
-                where:{invoiceId: invoiceId},
-            });
+            const {id} = req.params;
+            const selectedINV = await modelPayme.findOne({
+                where :{
+                    id: id
+                }
+            })
             if(!theUser){
                 return res.status(404).json({
                     status: 404,
@@ -185,30 +188,41 @@ module.exports = {
         try {
             const { id } = req.params;
             const deletedINV = await modelPayme.findByPk(id); // Menggunakan findByPk untuk mendapatkan data penghuni yang dihapus
-    
-            if (!deletedINV) {
+            const imageUrlInDatabase = deletedINV.gambar; // Ganti dengan atribut yang menyimpan URL gambar di model DP Anda
+            const urlParts = imageUrlInDatabase.split('/');
+            const blobName = urlParts.slice(4).join('/');
+
+            // Hapus gambar dari Google Cloud Storage
+            const deleteImageResult = await DeleteImage(blobName);
+            const deleteINV = await modelPayme.destroy({
+                where: {
+                  id: id,
+                },
+              });
+
+            if (!deletedDP) {
                 return res.status(404).json({
                     status: 404,
                     success: false,
-                    message: `failed to delete inv, cannot find id`,
+                    message: "failed to delete INV, cant find the id",
                     data: null
-                });
+                  });
+            }else{
+                return res.status(200).json({
+                    status: 200,
+                    success: false,
+                    message: `inv ${id} have been deleted ${deleteImageResult}`
+                  });
             }
-            await deletedINV.destroy();
-    
-            return res.status(200).json({
-                status: 200,
-                success: true,
-                message: `inv ${id} has been deleted`
-            });
         } catch (error) {
-            console.log(error);
+            console.log(error)
             return res.status(500).json({
                 status: 500,
                 success: false,
                 message: "internal server error",
                 data: null
-            });
+                });
         }
     },
+       
 }
