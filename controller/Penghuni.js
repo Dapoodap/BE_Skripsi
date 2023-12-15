@@ -9,7 +9,9 @@ const bycrpt = require('bcrypt')
 module.exports = {
     getAllPenghuni : async (req,res) =>{
         try {
-            const penghuni = await modelPenghuni.findAll();
+            const penghuni = await modelPenghuni.findAll({ include: [
+                { model: modelKamar, attributes: ['noKamar', 'tipeKamar', 'statusKamar', 'ratingKamar', 'deskripsiKamar', 'fasilitasKamar', 'hargaKamar'] },
+              ]});
             return(res.json({
                 MessageEvent:'Get All Penghuni',
                 Status:200,
@@ -29,7 +31,7 @@ module.exports = {
     postPenghuni : async (req,res) =>{
         try {
             const id = nanoid(10)
-            const {nama,noKamar,noHP,TanggalMasuk,alamat,jenisKelamin,BiayaTambahan} = req.body;
+            const {nama,noKamar,noHP,TanggalMasuk,alamat,jenisKelamin,BiayaTambahan,BarangBawaan} = req.body;
             const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             const usernameGenerate = `pghn_${noKamar}`
             const passwordGenerate = bycrpt.hashSync(`pass_${noKamar}`,10)
@@ -54,10 +56,10 @@ module.exports = {
                     data: null
                   });
             }
-            await kamarnya.update({
-                statusKamar : "isi"
-            })
             
+            
+            const BiayaSewaBulanan = BiayaTambahan + kamarnya.hargaKamar
+
             const data = await modelPenghuni.create({
                 id,
                 nama,
@@ -67,9 +69,14 @@ module.exports = {
                 jenisKelamin,
                 TanggalMasuk,
                 BiayaTambahan,
+                BiayaSewaBulanan,
+                BarangBawaan,
                 username : usernameGenerate,
                 password : passwordGenerate,
-                dataPembayaran : JSON.stringify(months.map(bulan => ({ bulan, status: false })))
+                dataPembayaran : months.map(bulan => ({ bulan, status: false }))
+            })
+            await kamarnya.update({
+                statusKamar : "isi"
             })
             return res.status(201).json({
                 status  : res.statusCode,
@@ -94,7 +101,7 @@ module.exports = {
                 where:{id: id},
                 include: [
                     { model: modelKamar, attributes: ['noKamar', 'tipeKamar', 'statusKamar', 'ratingKamar', 'deskripsiKamar', 'fasilitasKamar', 'hargaKamar'] },
-                    { model: modelLaporan, attributes: ['JenisKeluhan', 'DeskripsiKeluhan', 'TanggalLaporan'] }
+                    { model: modelLaporan, attributes: ['id','JenisKeluhan', 'DeskripsiKeluhan', 'TanggalLaporan'] }
                   ]
                
             });

@@ -63,6 +63,25 @@ module.exports = {
                 });
         }
     },
+    getAllTotalLaporan : async (req,res) =>{
+        try {
+            const laporan = await modelTotalLaporan.findAll();
+            return(res.json({
+                MessageEvent:'Get All Laporan',
+                Status:200,
+                Succses:true,
+                Data:laporan,
+            }))
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({
+                status: 500,
+                success: false,
+                message: "internal server error",
+                data: null
+                });
+        }
+    },
     postLaporan : async (req,res) =>{
         try {
             const id = nanoid(10)
@@ -119,7 +138,9 @@ module.exports = {
             const theData = await modelLaporan.findOne({
                 where:{
                     id: id
-                }
+                },include: [
+                    { model: modelPenghuni }
+                  ]
             },{
                 include : {
                     model : modelPenghuni,

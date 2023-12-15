@@ -7,9 +7,9 @@ const { verifyToken } = require('../../controller/Auth');
 router.get('/',getAllPenghuni)
 router.post('/',postPenghuni)
 router.get('/:id',getPenghuniById)
-router.put('/:id',editPenghuniById)
-router.put('/pass/:id',resetPasswordById)
-router.put('/change/:id',gantiPassword)
-router.delete('/:id',deleteUserById)
+router.put('/:id',verifyToken,editPenghuniById)
+router.put('/pass/:id',verifyToken,resetPasswordById)
+router.put('/change/:id',verifyToken,gantiPassword)
+router.delete('/:id',verifyToken,deleteUserById)
 
 module.exports = router

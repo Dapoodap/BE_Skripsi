@@ -41,33 +41,33 @@ module.exports = {
                     message : 'kamar penuh',
                 })
             }
-            const totalSewa = tambahanSewa + kamar.hargaKamar
+            const totalSewa = parseFloat(tambahanSewa) + parseFloat(kamar.hargaKamar)
             const totalDP = 0.5 * totalSewa
             await kamar.update({
                 statusKamar : "isi"
             })
-            const imageUrl = await uploadImage(myFile)
-            const data = await modelDP.create({
-                    id,
-                    nomorInvoice : `INV-${id}`,
-                    nama,
-                    noKamar,
-                    noHP,
-                    alamat,
-                    jenisKelamin,
-                    tanggal,
-                    tambahanBawaan,
-                    tambahanSewa,
-                    totalDP,
-                    totalSewa,
-                    gambar : imageUrl
+            // const imageUrl = await uploadImage(myFile)
+            // const data = await modelDP.create({
+            //         id,
+            //         nomorInvoice : `INV-${id}`,
+            //         nama,
+            //         noKamar,
+            //         noHP,
+            //         alamat,
+            //         jenisKelamin,
+            //         tanggal,
+            //         tambahanBawaan,
+            //         tambahanSewa,
+            //         totalDP,
+            //         totalSewa,
+            //         gambar : imageUrl
 
-            })
+            // })
             return res.status(201).json({
                 status  : res.statusCode,
                 succses : true,
                 message : 'invoice baru ditambahkan',
-                data
+                data : totalDP
             })
         } catch (error) {
             console.log(error)
@@ -120,6 +120,27 @@ module.exports = {
                     id: id
                 }
             })
+           if (!selectedINV) {
+            return res.status(404).json({
+                        status: 404,
+                        success: false,
+                        message: "failed to delete INV, cant find the id",
+                        data: null
+                      });
+           }
+           const kamar = await modelKamar.findOne({ where: { noKamar : selectedINV.noKamar } });
+           if (!kamar) {
+            return res.status(404).json({
+                status: 404,
+                success: false,
+                message: "failed to delete INV, cant find nomor kamar",
+                data: null
+              });
+           }
+            await kamar.update({
+            statusKamar : "kosong"
+            })
+                
             const imageUrlInDatabase = selectedINV.gambar; // Ganti dengan atribut yang menyimpan URL gambar di model DP Anda
             const urlParts = imageUrlInDatabase.split('/');
             const blobName = urlParts.slice(4).join('/');

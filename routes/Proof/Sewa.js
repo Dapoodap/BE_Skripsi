@@ -1,15 +1,16 @@
 var express = require('express');
 const { postInvoice, getAllInvoiceSewa, accInvoice, declineInvoice, deleteInvoiceById, getInvoiceByNomor } = require('../../controller/PayproofPenghuni');
+const { verifyToken } = require('../../controller/Auth');
 const router = express.Router()
 
 
 // router.get('/',getAllPenghuni)
-router.get('/',getAllInvoiceSewa)
-router.get('/:nomorInvoice',getInvoiceByNomor)
-router.post('/:idPenghuni',postInvoice)
-router.put('/acc/:invoiceId',accInvoice)
-router.put('/dec/:invoiceId',declineInvoice)
-router.delete('/:id',deleteInvoiceById)
+router.get('/',verifyToken,getAllInvoiceSewa)
+router.get('/:nomorInvoice',verifyToken,getInvoiceByNomor)
+router.post('/:idPenghuni',verifyToken,postInvoice)
+router.put('/acc/:invoiceId',verifyToken,accInvoice)
+router.put('/dec/:invoiceId',verifyToken,declineInvoice)
+router.delete('/:id',verifyToken,deleteInvoiceById)
 // router.get('/:id',getPenghuniById)
 // router.put('/:id',editPenghuniById)
 // router.put('/pass/:id',resetPasswordById)

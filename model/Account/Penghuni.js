@@ -5,11 +5,6 @@ const kamar = require('../Kamar');
 const laporan = require("../Laporan")
 const TotalLaporanBulanan = require("../LaporanTotal");
 
-
-
-
-
-
 const Penghuni = db.define('Penghuni', {
   id: {
     type: DataTypes.STRING,
@@ -33,6 +28,10 @@ const Penghuni = db.define('Penghuni', {
   TanggalMasuk: {
     type: DataTypes.DATE
   },
+  BarangBawaan: {
+    type: DataTypes.TEXT, // atau DataTypes.ARRAY(DataTypes.JSON) jika Sequelize mendukung
+    defaultValue: []
+  },
   BiayaTambahan: {
     type: DataTypes.FLOAT
   },
@@ -46,8 +45,11 @@ const Penghuni = db.define('Penghuni', {
     type: DataTypes.BOOLEAN, // Tipe data boolean untuk kolom isChange
     defaultValue: false // Nilai default dapat disesuaikan dengan kebutuhan
 },
+  BiayaSewaBulanan: {
+    type: DataTypes.FLOAT
+  },
   dataPembayaran: {
-    type: DataTypes.TEXT, // atau DataTypes.ARRAY(DataTypes.JSON) jika Sequelize mendukung
+    type: DataTypes.JSON,  // atau DataTypes.ARRAY(DataTypes.JSON) jika Sequelize mendukung
     defaultValue: [] // default array kosong
   }
 },{tableName: 'penghuni'});

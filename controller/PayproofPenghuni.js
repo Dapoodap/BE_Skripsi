@@ -66,7 +66,12 @@ module.exports = {
         try {
             const {nomorInvoice} = req.params
             const theInv = await modelPayme.findOne({
-                where:{nomorInvoice: nomorInvoice}});
+                where: { nomorInvoice: nomorInvoice },
+                include: [
+                  { model: modelPenghuni }
+                ]
+              });
+              
             if(!theInv){
                 return res.status(404).json({
                     status: 400,
@@ -113,10 +118,7 @@ module.exports = {
             }
 
             // Update status invoice menjadi 'acc'
-            await invoice.update({
-                status: 'acc'
-            });
-
+            
             // Update status bulan pada data pembayaran penghuni
             const penghuni = invoice.Penghuni;
             const bulan = invoice.bulan;
@@ -124,11 +126,15 @@ module.exports = {
 
 
             
-            const data = JSON.parse(penghuni.dataPembayaran)
+            const data = (JSON.parse(penghuni.dataPembayaran))
             const index = data.findIndex(item => item.bulan === bulan);
             if (index !== -1) {
                 data[index].status = true;
-                penghuni.dataPembayaran = JSON.stringify(data);
+                penghuni.dataPembayaran = data
+                await invoice.update({
+                    status: 'acc'
+                });
+
                 await penghuni.save();
             }
 
@@ -136,8 +142,7 @@ module.exports = {
                 status: 200,
                 success: true,
                 message: 'Invoice accepted',
-                data : data[index].status
-                // data: 
+                // data: typeof(JSON.parse(JSON.parse(penghuni.dataPembayaran)))
             });
         } catch (error) {
             console.log(error);
@@ -200,7 +205,7 @@ module.exports = {
                 },
               });
 
-            if (!deletedDP) {
+            if (!deleteINV) {
                 return res.status(404).json({
                     status: 404,
                     success: false,

@@ -4,8 +4,8 @@ const {getAllAdmin,getAdminById,postAdmin,deleteAdminById,resetPasswordById,edit
 const { verifyToken } = require('../../controller/Auth');
 
 
-router.get('/',getAllAdmin)
-router.post('/',postAdmin)
+router.get('/',verifyToken,getAllAdmin)
+router.post('/',verifyToken,postAdmin)
 router.get('/:id',verifyToken,getAdminById)
 router.put('/:id',verifyToken,editAdminById)
 router.put('/pass/:id',verifyToken,resetPasswordById)

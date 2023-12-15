@@ -1,15 +1,17 @@
 var express = require('express');
 const router = express.Router()
-const { getAllLaporan, postLaporan, getLaporanById, editLaporanById, deleteLaporanById, postTotalLaporan } = require('../controller/Laporan')
+const { getAllLaporan, postLaporan, getLaporanById, editLaporanById, deleteLaporanById, postTotalLaporan, getAllTotalLaporan } = require('../controller/Laporan');
+const { verifyToken } = require('../controller/Auth');
 
 
 // router.get('/',getAllPenghuni)
-router.get('/',getAllLaporan)
-router.post('/',postLaporan)
+router.get('/',verifyToken,getAllLaporan)
+router.get('/total',getAllTotalLaporan)
+router.post('/',verifyToken,postLaporan)
 router.post('/total',postTotalLaporan)
-router.get('/:id',getLaporanById)
-router.put('/:id',editLaporanById)
-router.delete('/:id',deleteLaporanById)
+router.get('/:id',verifyToken,getLaporanById)
+router.put('/:id',verifyToken,editLaporanById)
+router.delete('/:id',verifyToken,deleteLaporanById)
 // router.get('/:id',getPenghuniById)
 // router.put('/:id',editPenghuniById)
 // router.put('/pass/:id',resetPasswordById)
