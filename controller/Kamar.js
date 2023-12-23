@@ -5,7 +5,9 @@ const modelKamar = require('../model/Kamar')
 module.exports = {
     getAllKamar : async (req,res) =>{
         try {
-            const kamar = await modelKamar.findAll();
+            const kamar = await modelKamar.findAll({
+                order: Sequelize.literal('CAST(noKamar AS SIGNED)')
+            });
             return(res.json({
                 MessageEvent:'Get All Kamar',
                 Status:200,

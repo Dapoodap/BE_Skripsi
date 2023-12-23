@@ -6,7 +6,7 @@ module.exports = {
     editPengumumanById : async (req,res) =>{
         try {
             const {id} = req.params
-            const thePengumuman = await thePengumuman.update(req.body,{
+            const thePengumuman = await modelPengumuman.update(req.body,{
                 where:{
                     id:id
                 }
@@ -27,11 +27,12 @@ module.exports = {
                   });
             }
         } catch (error) {
+            console.log(error)
             return res.status(500).json({
                 status: 500,
                 success: false,
                 message: "internal server error",
-                data: null
+                data: error
                 });
         }
     },

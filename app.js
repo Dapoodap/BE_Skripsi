@@ -23,6 +23,7 @@ const TotalKeluhan = require('./model/LaporanTotal');
 const Sewa = require('./model/Payment/Payproof');
 const DP = require('./model/Payment/PayproofDP');
 const pengumuman = require('./model/Pengumuman');
+const chatbot = require('./model/Payment/PayproofCB');
 const uploadImage = require('./helper');
 
 

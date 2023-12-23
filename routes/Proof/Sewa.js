@@ -1,5 +1,5 @@
 var express = require('express');
-const { postInvoice, getAllInvoiceSewa, accInvoice, declineInvoice, deleteInvoiceById, getInvoiceByNomor } = require('../../controller/PayproofPenghuni');
+const { postInvoice, getAllInvoiceSewa, accInvoice, declineInvoice, deleteInvoiceById, getInvoiceByNomor, postInvoiceCB } = require('../../controller/PayproofPenghuni');
 const { verifyToken } = require('../../controller/Auth');
 const router = express.Router()
 
@@ -8,6 +8,7 @@ const router = express.Router()
 router.get('/',verifyToken,getAllInvoiceSewa)
 router.get('/:nomorInvoice',verifyToken,getInvoiceByNomor)
 router.post('/:idPenghuni',verifyToken,postInvoice)
+router.post('/cb/:idPenghuni',verifyToken,postInvoiceCB)
 router.put('/acc/:invoiceId',verifyToken,accInvoice)
 router.put('/dec/:invoiceId',verifyToken,declineInvoice)
 router.delete('/:id',verifyToken,deleteInvoiceById)

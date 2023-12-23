@@ -2,9 +2,13 @@ const { DataTypes } = require('sequelize');
 const db = require('../config/DB');
 
 const TotalKeluhan = db.define('TotalKeluhan', {
-    bulan: {
-      type: DataTypes.STRING,
+    id: {
+      type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
+    },
+    bulan: {
+      type: DataTypes.STRING
     },
     jumlahLaporan: {
       type: DataTypes.INTEGER,
